@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gmmlab"
+version = "0.0.1"
+description = "From-scratch GMM/EM and active-learning experiments (PhD-prep research log)"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "scipy",
+    "matplotlib",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "ruff",
+    "scikit-learn", # test-only, for comparison
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 88
+# lessons/*.md hold hand-crafted teaching examples (deliberate formatting,
+# sometimes deliberately "wrong" code to show a bug) -- not something an
+# auto-formatter should touch. `ruff check .` / `ruff format .` are safe to
+# run from the repo root with this exclude in place.
+extend-exclude = ["lessons/*.md"]
+
+[tool.ruff.lint]
+# E/W: pycodestyle (PEP 8 layout)   F: pyflakes (unused/undefined names)
+# I: import order                   UP: modern Python syntax
+# B: bugbear (likely bugs)          SIM: simplifications
+# N: naming                         NPY: NumPy-specific pitfalls
+select = ["E", "F", "W", "I", "UP", "B", "N", "SIM", "NPY"]
+# N803/N806 want lowercase names. We deliberately keep X, Sigma, D, R: they
+# match the notation in lessons/00_notation.md, as scikit-learn does with X.
+ignore = ["N803", "N806"]
